@@ -1,0 +1,29 @@
+version: '3.8'
+services:
+  postgres:
+    image: postgres:15
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=adopet_db
+    volumes:
+      - ./pg_data:/var/lib/postgresql/data
+    ports:
+      - '5432:5432'
+    networks:
+      - postgres-db-network
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: 'admin@email.com'
+      PGADMIN_DEFAULT_PASSWORD: 'admin'
+    ports:
+      - '16543:80'
+    volumes:
+      - ./servers.json:/pgadmin4/servers.json
+    networks:
+      - postgres-db-network
+
+networks:
+  postgres-db-network:
+    driver: bridge
