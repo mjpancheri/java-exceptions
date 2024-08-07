@@ -1,7 +1,15 @@
 package adopet.api.model;
 
-import adopet.api.dto.SolicitacaoDeAdocaoDTO;
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -32,20 +40,19 @@ public class Adocao {
 
     private String justificativa;
 
-    public Adocao(Tutor tutor, Pet pet, String motivo){
+    public Adocao(Tutor tutor, Pet pet, String motivo) {
         this.tutor = tutor;
         this.pet = pet;
         this.motivo = motivo;
         this.status = StatusAdocao.AGUARDANDO_AVALIACAO;
     }
 
-    public void marcarComoAprovada(){
+    public void marcarComoAprovada() {
 
         this.status = StatusAdocao.APROVADO;
     }
 
-    public void marcarComoReprovada(String justificativa)
-    {
+    public void marcarComoReprovada(String justificativa) {
         this.status = StatusAdocao.REPROVADO;
         this.justificativa = justificativa;
     }

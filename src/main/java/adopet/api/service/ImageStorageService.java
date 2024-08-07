@@ -20,15 +20,14 @@ public class ImageStorageService {
 
         try {
             imagem.transferTo(new File(caminhoCompletoDoArquivo));
-        }catch (IOException e){
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
         return novoNome;
     }
 
-    private String gerarNovoNome(String nomeOriginal)
-    {
+    private String gerarNovoNome(String nomeOriginal) {
         String[] nomeSplit = nomeOriginal.split("\\.");
         String extensao = "." + nomeSplit[1];
 

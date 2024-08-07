@@ -1,7 +1,12 @@
 package adopet.api.model;
 
 import adopet.api.dto.CadastroTutorDTO;
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -31,7 +36,7 @@ public class Tutor {
     @OneToMany(mappedBy = "tutor")
     private List<Adocao> adocoes = new ArrayList<>();
 
-    public Tutor(CadastroTutorDTO dados){
+    public Tutor(CadastroTutorDTO dados) {
         this.nome = dados.nome();
         this.email = dados.email();
     }
