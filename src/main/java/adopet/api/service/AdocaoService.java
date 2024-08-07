@@ -6,6 +6,7 @@ import adopet.api.dto.ReprovarAdocaoDTO;
 import adopet.api.dto.SolicitacaoDeAdocaoDTO;
 import adopet.api.model.Adocao;
 import adopet.api.model.Pet;
+import adopet.api.model.StatusAdocao;
 import adopet.api.model.Tutor;
 import adopet.api.repository.AdocaoRepository;
 import adopet.api.repository.PetRepository;
@@ -39,8 +40,17 @@ public class AdocaoService {
 
     public void solicitar(SolicitacaoDeAdocaoDTO dto) {
         Pet pet = petRepository.getReferenceById(dto.idPet());
-        Tutor tutor = tutorRepository.getReferenceById(dto.idTutor());
+        if (pet.getAdotado()) {
+            throw new IllegalStateException("Pet já foi adotado");
+        }
+        if (adocaoRepository.existsByPetIdAndStatus(dto.idPet(), StatusAdocao.AGUARDANDO_AVALIACAO)) {
+            throw new UnsupportedOperationException("Pet já está aguardando avaliação");
+        }
 
+        Tutor tutor = tutorRepository.getReferenceById(dto.idTutor());
+        if (adocaoRepository.countByTutorIdAndStatus(tutor.getId(), StatusAdocao.APROVADO) > 1) {
+            throw new IllegalStateException("Tutor atingiu o número máximo de adoções aprovadas");
+        }
         adocaoRepository.save(new Adocao(tutor, pet, dto.motivo()));
     }
 
